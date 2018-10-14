@@ -10,11 +10,15 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class ViewController:UIViewController,UITableViewDelegate,UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var categoryTextField: UITextField!
+    var categoryText : String = ""
+    
     let realm = try! Realm()
+    
     var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date",ascending:false)
     
     override func viewDidLoad() {
@@ -100,6 +104,15 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+    }
+    
+    @IBAction func CategorySearch(_ sender: UITextField) {
+        categoryText = categoryTextField.text!
+        
+        taskArray =  try! Realm().objects(Task.self).filter("category == '\(categoryText)'").sorted(byKeyPath: "date",ascending:false)
+        
+        viewWillAppear(true)
+
     }
     
 }

@@ -109,7 +109,11 @@ class ViewController:UIViewController,UITableViewDelegate,UITableViewDataSource 
     @IBAction func CategorySearch(_ sender: UITextField) {
         categoryText = categoryTextField.text!
         
-        taskArray =  try! Realm().objects(Task.self).filter("category == '\(categoryText)'").sorted(byKeyPath: "date",ascending:false)
+        if(categoryText != ""){
+            taskArray =  try! Realm().objects(Task.self).filter("category == '\(categoryText)'").sorted(byKeyPath: "date",ascending:false)
+        }else{
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date",ascending:false)
+        }
         
         viewWillAppear(true)
 
